@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package imitation.events;
+
 import com.google.cloud.firestore.Firestore;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
@@ -34,13 +35,14 @@ import javax.swing.JOptionPane;
 public class Login extends javax.swing.JFrame {
 
     private static Firestore db;
+
     /**
      * Creates new form Login
      */
     public Login(Firestore db) {
         initComponents();
         this.db = db;
-        
+
     }
 
     /**
@@ -176,8 +178,9 @@ public class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_btnViewRegisterScreenActionPerformed
 
     private void btnViewRegisterScreenMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnViewRegisterScreenMouseClicked
-        setVisible(false);
         new Register(db).setVisible(true);
+        setVisible(false);
+
     }//GEN-LAST:event_btnViewRegisterScreenMouseClicked
 
     private void btnLoginMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnLoginMouseClicked
@@ -187,23 +190,20 @@ public class Login extends javax.swing.JFrame {
         // now that we have the email and password we can log the user in
         try {
             String userToken = login(email, password);
-            if(userToken != null){
-             System.out.println("User Log In Successful: ");
-            UserRecord userRecord = FirebaseAuth.getInstance().getUserByEmail(email);
-            System.out.println("User Id: " + userRecord.getUid());
-            // now that log in was successful we can navigate the user to the main screen
-            // you can show an error message if the login was unsuccessful
-            
-            setVisible(false); // hide the current screen
-            
-            new Mainscreen(userRecord.getUid()).setVisible(true);
+            if (userToken != null) {
+                System.out.println("User Log In Successful: ");
+                UserRecord userRecord = FirebaseAuth.getInstance().getUserByEmail(email);
+                System.out.println("User Id: " + userRecord.getUid());
+                // now that log in was successful we can navigate the user to the main screen
+                // you can show an error message if the login was unsuccessful
+
+                setVisible(false); // hide the current screen
+
+                new Mainscreen(userRecord.getUid()).setVisible(true);
             } else {
-                System.out.println("The result of logging in: " + userToken);
-
-                JOptionPane errorDialog = new JOptionPane("There was an error when logging in");
-                errorDialog.setVisible(true);
+                System.out.println("Error logging in, user token is:" + userToken);
+                JOptionPane.showMessageDialog(null, "Please check your email and password", "Error Logging In", 1);
             }
-
 
         } catch (FirebaseAuthException ex) {
             Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
@@ -244,9 +244,11 @@ public class Login extends javax.swing.JFrame {
             }
         });
     }
-    
+
     /**
-     * Exchange an email and password with the Firebase Auth REST API for an ID token.
+     * Exchange an email and password with the Firebase Auth REST API for an ID
+     * token.
+     *
      * @param email A username or email registered with Firebase Authentication.
      * @param password The password associated with the username or email.
      * @return An ID token from Firebase.
@@ -276,7 +278,10 @@ public class Login extends javax.swing.JFrame {
                 throw new Exception("Error Logging In");
             }
             token = rootObj.get("idToken").getAsString();
-        } catch (IOException e) { System.out.println(e.getMessage()); return null; } catch (Exception ex) {
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+            return null;
+        } catch (Exception ex) {
             Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
             return null;
         }

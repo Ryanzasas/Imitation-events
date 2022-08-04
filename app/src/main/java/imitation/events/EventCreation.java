@@ -4,9 +4,6 @@
  */
 package imitation.events;
 
-import com.google.cloud.firestore.Firestore;
-
-
 /**
  *
  * @author ryanzasas
@@ -16,6 +13,7 @@ public class EventCreation extends javax.swing.JFrame {
     private static DatabaseOperations dbOperations;
     private static String userId;
     private static User user;
+
     /**
      * Creates new form EventCreation
      */
@@ -166,16 +164,15 @@ public class EventCreation extends javax.swing.JFrame {
 
     private void btnSubmitMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSubmitMouseClicked
         // Handle submission of an event
-        
+
         String eventName = txfEventName.getText();
         String eventLocation = txfEventLocation.getText();
         String eventPrice = txfEventPrice.getText();
-        
-        
-        if(eventName.isEmpty() || eventLocation.isEmpty() || eventPrice.isEmpty()){
+
+        if (eventName.isEmpty() || eventLocation.isEmpty() || eventPrice.isEmpty()) {
             lblEmptyFieldsError.setVisible(true);
         } else {
-            dbOperations.addEvent(eventName,eventLocation, Double.parseDouble(eventPrice), user);
+            dbOperations.addEvent(eventName, eventLocation, Double.parseDouble(eventPrice), user);
             txfEventName.setText("");
             txfEventLocation.setText("");
             txfEventPrice.setText("");
@@ -184,14 +181,14 @@ public class EventCreation extends javax.swing.JFrame {
 
     private void btnBackToMainActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackToMainActionPerformed
         // route the user back to main screen
-        setVisible(false);
         new Mainscreen(userId).setVisible(true);
+        setVisible(false);
+
     }//GEN-LAST:event_btnBackToMainActionPerformed
 
     private void btnBackToMainMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnBackToMainMouseClicked
     }//GEN-LAST:event_btnBackToMainMouseClicked
 
-    
     /**
      * @param args the command line arguments
      */
@@ -218,7 +215,7 @@ public class EventCreation extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(EventCreation.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-        
+
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -226,8 +223,7 @@ public class EventCreation extends javax.swing.JFrame {
                 new EventCreation(userId).setVisible(true);
             }
         });
-        
-        
+
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

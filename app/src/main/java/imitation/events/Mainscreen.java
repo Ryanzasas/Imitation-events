@@ -5,7 +5,6 @@
 package imitation.events;
 
 import java.util.List;
-import javax.swing.JLabel;
 
 /**
  *
@@ -15,27 +14,31 @@ public class Mainscreen extends javax.swing.JFrame {
 
     private static String userId;
     private static List<Event> events;
+    private static User userData;
     private static DatabaseOperations dbOperations;
 
     /**
      * Creates new form Mainscreen
+     *
+     * @param uid
      */
     public Mainscreen(String uid) {
         initComponents();
         userId = uid;
-        DatabaseOperations dbOperations = new DatabaseOperations();
-        User userData = dbOperations.getUserData(uid);
+        dbOperations = new DatabaseOperations();
+        userData = dbOperations.getUserData(uid);
         System.out.println(userData);
         events = dbOperations.getAllEvents();
 
-        lstEvents.add(new javax.swing.JLabel("Menu Item Random"));
-        lblEvent1.setText(events.get(0).getName());
-        lblEvent2.setText(events.get(1).getName());
-        
         lstEvents.setModel(new javax.swing.AbstractListModel<String>() {
-    public int getSize() { return events.size(); }
-    public String getElementAt(int i) { return events.get(i).getName(); }
-});
+            public int getSize() {
+                return events.size();
+            }
+
+            public String getElementAt(int i) {
+                return events.get(i).getName();
+            }
+        });
 
     }
 
@@ -69,10 +72,13 @@ public class Mainscreen extends javax.swing.JFrame {
         jPasswordField1 = new javax.swing.JPasswordField();
         jMenuItem5 = new javax.swing.JMenuItem();
         jLabel2 = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         lblCreateEvent = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         lstEvents = new javax.swing.JList<>();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
 
         jMenuItem1.setText("jMenuItem1");
 
@@ -124,31 +130,63 @@ public class Mainscreen extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(lstEvents);
 
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(50, 50, 50)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(jLabel1)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblCreateEvent))
+                .addGap(50, 50, 50))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(25, 25, 25)
+                .addComponent(jLabel1)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 399, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(lblCreateEvent)
+                .addContainerGap(62, Short.MAX_VALUE))
+        );
+
+        jButton1.setText("Profile");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        jButton2.setText("Help");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(201, 201, 201)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(lblCreateEvent)
-                    .addComponent(jLabel1))
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(132, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(127, 127, 127))
+                .addGap(50, 50, 50)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jButton1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton2))
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(50, 50, 50))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(36, 36, 36)
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 198, Short.MAX_VALUE)
-                .addGap(24, 24, 24)
-                .addComponent(lblCreateEvent)
-                .addGap(49, 49, 49))
+                .addContainerGap(25, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton1)
+                    .addComponent(jButton2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         pack();
@@ -158,14 +196,35 @@ public class Mainscreen extends javax.swing.JFrame {
         // This method is to handle when the user clicks the "Create event link"
         // This will navigate them to the event creation page
 
-        setVisible(false);
         new EventCreation(userId).setVisible(true);
+        setVisible(false);
+
     }//GEN-LAST:event_lblCreateEventMouseClicked
 
+    /**
+     * This method is fired each time a new item has been selected from the
+     * list. This will navigate the user to the Event Page where they can view
+     * event information as well as register (RSVP) for the event.
+     *
+     * @param evt
+     */
     private void lstEventsValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_lstEventsValueChanged
-        // TODO add your handling code here:
-        System.out.println("List items changed");
+
+        int selectedIndex = lstEvents.getSelectedIndex();
+        Event selectedEvent = events.get(selectedIndex);
+
+        if (!evt.getValueIsAdjusting()) {
+            new EventPage(selectedEvent, userData).setVisible(true);
+
+            setVisible(false);
+        }
+
+
     }//GEN-LAST:event_lstEventsValueChanged
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -205,6 +264,8 @@ public class Mainscreen extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.ButtonGroup buttonGroup2;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JFileChooser jFileChooser1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -217,6 +278,7 @@ public class Mainscreen extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JPasswordField jPasswordField1;
     private javax.swing.JPopupMenu jPopupMenu1;
     private javax.swing.JPopupMenu jPopupMenu2;

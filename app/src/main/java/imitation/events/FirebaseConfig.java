@@ -20,8 +20,9 @@ public class FirebaseConfig {
 
     public void initFirebase() {
         FileInputStream serviceAccount = null;
+        System.out.println("Working Directory = " + System.getProperty("user.dir"));
         try {
-            serviceAccount = new FileInputStream("/Users/ryanzasas/NetBeansProjects/imitation-events/app/src/main/java/imitation/events/credentials.json");
+            serviceAccount = new FileInputStream(System.getProperty("user.dir") + "/src/main/java/imitation/events/credentials.json");
            
             FirebaseOptions options = new FirebaseOptions.Builder()
                     .setCredentials(GoogleCredentials.fromStream(serviceAccount))
