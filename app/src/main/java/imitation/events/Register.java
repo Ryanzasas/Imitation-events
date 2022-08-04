@@ -1,8 +1,19 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package imitation.events;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthException;
+import com.google.firebase.auth.UserRecord;
+import com.google.firebase.auth.UserRecord.CreateRequest;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import com.google.api.core.ApiFuture;
+import com.google.cloud.firestore.DocumentReference;
+import com.google.cloud.firestore.Firestore;
+import com.google.cloud.firestore.WriteResult;
+import com.google.firebase.cloud.FirestoreClient;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 /**
  *
@@ -10,11 +21,15 @@ package imitation.events;
  */
 public class Register extends javax.swing.JFrame {
 
+    private static Firestore db;
     /**
      * Creates new form login
      */
-    public Register() {
+    public Register(Firestore db) {
         initComponents();
+        this.db = db;
+        
+        
     }
 
     /**
@@ -27,47 +42,220 @@ public class Register extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
+        lblpassword = new javax.swing.JLabel();
+        lblfirstname = new javax.swing.JLabel();
+        lbllastname = new javax.swing.JLabel();
+        txfFirstName = new javax.swing.JTextField();
+        txfPhoneNumber = new javax.swing.JTextField();
+        txfPassword = new javax.swing.JTextField();
+        lblphonenumber = new javax.swing.JLabel();
+        txfLastName = new javax.swing.JTextField();
+        btnRegister = new javax.swing.JButton();
+        jLabel6 = new javax.swing.JLabel();
+        txfNavigateToLogin = new javax.swing.JLabel();
+        txfEmail = new javax.swing.JTextField();
+        lblemail = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel1.setText("jLabel1");
+        jLabel1.setText("Register");
 
-        jLabel2.setText("jLabel2");
+        lblpassword.setText("Password");
 
-        jLabel3.setText("jLabel3");
+        lblfirstname.setText("First name");
+
+        lbllastname.setText("Last name");
+
+        txfPassword.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txfPasswordActionPerformed(evt);
+            }
+        });
+
+        lblphonenumber.setText("Phone Number");
+
+        btnRegister.setText("Register");
+        btnRegister.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnRegisterMouseClicked(evt);
+            }
+        });
+
+        jLabel6.setText("Already have an account?");
+
+        txfNavigateToLogin.setForeground(new java.awt.Color(0, 51, 255));
+        txfNavigateToLogin.setText("Login Instead");
+        txfNavigateToLogin.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                txfNavigateToLoginMouseClicked(evt);
+            }
+        });
+
+        lblemail.setText("Email");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 87, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(lblfirstname)
+                        .addGap(48, 48, 48)
+                        .addComponent(txfFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lbllastname)
+                            .addComponent(lblphonenumber)
+                            .addComponent(lblemail)
+                            .addComponent(lblpassword))
+                        .addGap(48, 48, 48)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txfPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txfEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txfPhoneNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txfLastName, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(65, 65, 65))
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(161, 161, 161)
-                        .addComponent(jLabel1))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnRegister)
+                            .addComponent(jLabel1)))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(88, 88, 88)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel2))))
-                .addContainerGap(197, Short.MAX_VALUE))
+                        .addGap(123, 123, 123)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(37, 37, 37)
+                                .addComponent(txfNavigateToLogin))
+                            .addComponent(jLabel6))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+
+        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {lblemail, lblfirstname, lbllastname, lblpassword, lblphonenumber, txfEmail, txfFirstName, txfLastName, txfPassword, txfPhoneNumber});
+
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(76, 76, 76)
+                .addGap(27, 27, 27)
                 .addComponent(jLabel1)
-                .addGap(34, 34, 34)
-                .addComponent(jLabel2)
-                .addGap(30, 30, 30)
-                .addComponent(jLabel3)
-                .addContainerGap(109, Short.MAX_VALUE))
+                .addGap(24, 24, 24)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblfirstname)
+                    .addComponent(txfFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lbllastname)
+                    .addComponent(txfLastName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblphonenumber)
+                    .addComponent(txfPhoneNumber, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblemail)
+                    .addComponent(txfEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblpassword)
+                    .addComponent(txfPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(24, 24, 24)
+                .addComponent(btnRegister)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel6)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txfNavigateToLogin)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+
+        layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {lblemail, lblfirstname, lbllastname, lblpassword, lblphonenumber, txfEmail, txfFirstName, txfLastName, txfPassword, txfPhoneNumber});
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnRegisterMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnRegisterMouseClicked
+         
+        String firstName = txfFirstName.getText();
+        String lastName = txfLastName.getText();
+        String email = txfEmail.getText();
+        String password = txfPassword.getText();
+        String phoneNumber = txfPhoneNumber.getText();
+        
+        // TODO: This is where I will do data validation.
+        // Need to make sure that:
+        // - All fields have been filled out
+        // - Email is a correctly formatted email address
+        // - Phone number has the "+" with area code / Or can add it ourselves in code
+        // - Password meets min requiremnts
+        
+        // Using the Firebase Create Request Class to create a new user with
+        // given information
+        CreateRequest request = new CreateRequest()
+            .setEmail(email)
+            .setEmailVerified(false)
+            .setPassword(password)
+            .setPhoneNumber(phoneNumber)
+            .setDisplayName(firstName + " " + lastName)
+            .setDisabled(false);
+
+        UserRecord userRecord; // User Information returned from Firebase
+        try {
+            userRecord = FirebaseAuth.getInstance().createUser(request);
+            System.out.println("Successfully created new user: " + userRecord.getUid());
+            
+            String userId = userRecord.getUid();
+            
+            // since we know that the account was created successfully,
+            // we can save the user information to the database
+            
+            
+            DocumentReference docRef = db.collection("users").document(userId);
+            // Add document data  with id "alovelace" using a hashmap
+            Map<String, Object> data = new HashMap<>();
+            data.put("firstName", firstName);
+            data.put("lastName", lastName);
+            data.put("email", email);
+            data.put("phoneNumber", phoneNumber);
+            data.put("uid", userId);
+            //asynchronously write data
+            ApiFuture<WriteResult> result = docRef.set(data);
+            
+            System.out.println("User data saved in the database");
+            
+            // Now that the user has successfully been saved to the database, 
+            // we can navigate the user to the main screen
+            
+            setVisible(false); // hide the current screen
+            
+            new Login(db).setVisible(true);
+            
+
+        } catch (FirebaseAuthException ex) {
+            Logger.getLogger(Register.class.getName()).log(Level.SEVERE, null, ex);
+            
+          // error was caught so we know that there was a problem
+          // here we want to show an error message
+          
+            JOptionPane errorMessage = new JOptionPane("Error" + ex.getMessage());
+            errorMessage.setVisible(true);
+          
+       
+        }
+        
+        
+    }//GEN-LAST:event_btnRegisterMouseClicked
+
+    private void txfPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txfPasswordActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txfPasswordActionPerformed
+
+    private void txfNavigateToLoginMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txfNavigateToLoginMouseClicked
+        // TODO add your handling code here:
+        setVisible(false);
+        new Login(db).setVisible(true);
+    }//GEN-LAST:event_txfNavigateToLoginMouseClicked
 
     /**
      * @param args the command line arguments
@@ -100,14 +288,25 @@ public class Register extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Register().setVisible(true);
+                new Register(db).setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnRegister;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel lblemail;
+    private javax.swing.JLabel lblfirstname;
+    private javax.swing.JLabel lbllastname;
+    private javax.swing.JLabel lblpassword;
+    private javax.swing.JLabel lblphonenumber;
+    private javax.swing.JTextField txfEmail;
+    private javax.swing.JTextField txfFirstName;
+    private javax.swing.JTextField txfLastName;
+    private javax.swing.JLabel txfNavigateToLogin;
+    private javax.swing.JTextField txfPassword;
+    private javax.swing.JTextField txfPhoneNumber;
     // End of variables declaration//GEN-END:variables
 }
