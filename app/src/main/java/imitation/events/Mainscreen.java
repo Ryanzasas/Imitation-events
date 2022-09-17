@@ -16,6 +16,7 @@ public class Mainscreen extends javax.swing.JFrame {
     private static List<Event> events;
     private static User userData;
     private static DatabaseOperations dbOperations;
+    
 
     /**
      * Creates new form Mainscreen
@@ -77,6 +78,7 @@ public class Mainscreen extends javax.swing.JFrame {
         lblCreateEvent = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         lstEvents = new javax.swing.JList<>();
+        jButton3 = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
 
@@ -130,6 +132,13 @@ public class Mainscreen extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(lstEvents);
 
+        jButton3.setText("Logout");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -139,7 +148,8 @@ public class Mainscreen extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(jLabel1)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblCreateEvent))
+                    .addComponent(lblCreateEvent)
+                    .addComponent(jButton3))
                 .addGap(50, 50, 50))
         );
         jPanel1Layout.setVerticalGroup(
@@ -151,7 +161,9 @@ public class Mainscreen extends javax.swing.JFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 399, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(lblCreateEvent)
-                .addContainerGap(62, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(jButton3)
+                .addContainerGap(21, Short.MAX_VALUE))
         );
 
         jButton1.setText("Profile");
@@ -226,6 +238,12 @@ public class Mainscreen extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        
+        
+    }//GEN-LAST:event_jButton3ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -266,6 +284,7 @@ public class Mainscreen extends javax.swing.JFrame {
     private javax.swing.ButtonGroup buttonGroup2;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JFileChooser jFileChooser1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
